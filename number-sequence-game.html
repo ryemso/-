@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자 순서 기억 게임 - 치매 예방</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .game-title {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .game-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .display-card {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .display-card.showing {
+            transform: scale(1.1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            max-width: 300px;
+            margin: 0 auto 30px;
+        }
+
+        .number-btn {
+            width: 80px;
+            height: 80px;
+            border: 3px solid #4f46e5;
+            background: white;
+            color: #4f46e5;
+            font-size: 1.8rem;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .number-btn:hover {
+            background: #4f46e5;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+        }
+
+        .number-btn:active {
+            transform: translateY(0);
+        }
+
+        .control-btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .retry-btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+        }
+
+        .retry-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .user-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-number {
+            width: 40px;
+            height: 40px;
+            background: #e0e7ff;
+            border: 2px solid #4f46e5;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .input-placeholder {
+            background: #f3f4f6;
+            border: 2px dashed #d1d5db;
+            color: #9ca3af;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+
+        .message.success {
+            background: #dcfce7;
+            color: #166534;
+            border: 2px solid #bbf7d0;
+        }
+
+        .message.error {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 2px solid #fecaca;
+        }
+
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 2px solid #bfdbfe;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 20px;
+            }
+            
+            .game-title {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                gap: 20px;
+            }
+            
+            .display-card {
+                width: 150px;
+                height: 150px;
+                font-size: 4rem;
+            }
+            
+            .number-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="game-title">🧠 숫자 순서 기억</h1>
+        <p class="game-subtitle">순차적 기억력과 집중력을 훈련하세요</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="level">1</div>
+                <div class="stat-label">레벨</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">점수</div>
+            </div>
+        </div>
+
+        <div id="waiting-screen">
+            <button class="control-btn start-btn" onclick="startGame()">🎮 게임 시작하기</button>
+        </div>
+
+        <div id="showing-screen" class="hidden">
+            <div class="display-card" id="display-card"></div>
+            <p class="message info">숫자를 기억하세요...</p>
+        </div>
+
+        <div id="input-screen" class="hidden">
+            <p class="message info" id="input-message">순서대로 숫자를 클릭하세요</p>
+            <div class="user-input" id="user-input"></div>
+            <div class="number-grid">
+                <button class="number-btn" onclick="selectNumber(1)">1</button>
+                <button class="number-btn" onclick="selectNumber(2)">2</button>
+                <button class="number-btn" onclick="selectNumber(3)">3</button>
+                <button class="number-btn" onclick="selectNumber(4)">4</button>
+                <button class="number-btn" onclick="selectNumber(5)">5</button>
+                <button class="number-btn" onclick="selectNumber(6)">6</button>
+                <button class="number-btn" onclick="selectNumber(7)">7</button>
+                <button class="number-btn" onclick="selectNumber(8)">8</button>
+                <button class="number-btn" onclick="selectNumber(9)">9</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="message" id="result-message"></div>
+            <button class="control-btn retry-btn" onclick="startGame()">🔄 다시 시도</button>
+            <button class="control-btn reset-btn" onclick="resetGame()">🏠 처음부터</button>
+        </div>
+    </div>
+
+    <script>
+        let sequence = [];
+        let userInput = [];
+        let currentLevel = 1;
+        let currentScore = 0;
+        let gameState = 'waiting'; // waiting, showing, input, result
+
+        function generateSequence(length) {
+            const newSequence = [];
+            for (let i = 0; i < length; i++) {
+                newSequence.push(Math.floor(Math.random() * 9) + 1);
+            }
+            return newSequence;
+        }
+
+        function updateStats() {
+            document.getElementById('level').textContent = currentLevel;
+            document.getElementById('score').textContent = currentScore;
+        }
+
+        function showScreen(screenName) {
+            const screens = ['waiting-screen', 'showing-screen', 'input-screen', 'result-screen'];
+            screens.forEach(screen => {
+                document.getElementById(screen).classList.add('hidden');
+            });
+            document.getElementById(screenName).classList.remove('hidden');
+        }
+
+        function startGame() {
+            sequence = generateSequence(currentLevel + 2);
+            userInput = [];
+            gameState = 'showing';
+            showScreen('showing-screen');
+            showSequence();
+        }
+
+        async function showSequence() {
+            const displayCard = document.getElementById('display-card');
+            
+            for (let i = 0; i < sequence.length; i++) {
+                displayCard.textContent = sequence[i];
+                displayCard.classList.add('showing');
+                
+                await new Promise(resolve => setTimeout(resolve, 800));
+                
+                displayCard.textContent = '';
+                displayCard.classList.remove('showing');
+                
+                await new Promise(resolve => setTimeout(resolve, 300));
+            }
+            
+            gameState = 'input';
+            showScreen('input-screen');
+            updateUserInputDisplay();
+        }
+
+        function updateUserInputDisplay() {
+            const container = document.getElementById('user-input');
+            container.innerHTML = '';
+            
+            // 입력된 숫자들
+            userInput.forEach(num => {
+                const div = document.createElement('div');
+                div.className = 'input-number';
+                div.textContent = num;
+                container.appendChild(div);
+            });
+            
+            // 남은 자리 표시
+            for (let i = userInput.length; i < sequence.length; i++) {
+                const div = document.createElement('div');
+                div.className = 'input-number input-placeholder';
+                div.textContent = '_';
+                container.appendChild(div);
+            }
+        }
+
+        function selectNumber(number) {
+            if (gameState !== 'input') return;
+            
+            userInput.push(number);
+            updateUserInputDisplay();
+            
+            if (userInput.length === sequence.length) {
+                checkAnswer();
+            }
+        }
+
+        function checkAnswer() {
+            const isCorrect = userInput.every((num, index) => num === sequence[index]);
+            const messageEl = document.getElementById('result-message');
+            
+            if (isCorrect) {
+                currentScore += currentLevel * 10;
+                currentLevel++;
+                messageEl.textContent = '🎉 정답입니다! 다음 단계로 진행합니다.';
+                messageEl.className = 'message success';
+                
+                setTimeout(() => {
+                    startGame();
+                }, 2000);
+            } else {
+                messageEl.textContent = '❌ 틀렸습니다. 다시 시도해보세요.';
+                messageEl.className = 'message error';
+            }
+            
+            updateStats();
+            gameState = 'result';
+            showScreen('result-screen');
+        }
+
+        function resetGame() {
+            currentLevel = 1;
+            currentScore = 0;
+            sequence = [];
+            userInput = [];
+            gameState = 'waiting';
+            updateStats();
+            showScreen('waiting-screen');
+        }
+
+        // 초기화
+        updateStats();
+    </script>
+</body>
+</html>

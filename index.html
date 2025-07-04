@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숫자 순서 기억 게임 - 치매 예방</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="game-title">🧠 숫자 순서 기억</h1>
+        <p class="game-subtitle">순차적 기억력과 집중력을 훈련하세요</p>
+        
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-value" id="level">1</div>
+                <div class="stat-label">레벨</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">점수</div>
+            </div>
+        </div>
+
+        <div id="waiting-screen">
+            <button class="control-btn start-btn" onclick="startGame()">🎮 게임 시작하기</button>
+        </div>
+
+        <div id="showing-screen" class="hidden">
+            <div class="display-card" id="display-card"></div>
+            <p class="message info">숫자를 기억하세요...</p>
+        </div>
+
+        <div id="input-screen" class="hidden">
+            <p class="message info" id="input-message">순서대로 숫자를 클릭하세요</p>
+            <div class="user-input" id="user-input"></div>
+            <div class="number-grid">
+                <button class="number-btn" onclick="selectNumber(1)">1</button>
+                <button class="number-btn" onclick="selectNumber(2)">2</button>
+                <button class="number-btn" onclick="selectNumber(3)">3</button>
+                <button class="number-btn" onclick="selectNumber(4)">4</button>
+                <button class="number-btn" onclick="selectNumber(5)">5</button>
+                <button class="number-btn" onclick="selectNumber(6)">6</button>
+                <button class="number-btn" onclick="selectNumber(7)">7</button>
+                <button class="number-btn" onclick="selectNumber(8)">8</button>
+                <button class="number-btn" onclick="selectNumber(9)">9</button>
+            </div>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="message" id="result-message"></div>
+            <button class="control-btn retry-btn" onclick="startGame()">🔄 다시 시도</button>
+            <button class="control-btn reset-btn" onclick="resetGame()">🏠 처음부터</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

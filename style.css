@@ -1,0 +1,280 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.game-container {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+.game-title {
+  color: #333;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.game-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-bottom: 30px;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+.display-card {
+  width: 200px;
+  height: 200px;
+  margin: 0 auto 30px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.display-card.showing {
+  transform: scale(1.1);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.number-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  max-width: 300px;
+  margin: 0 auto 30px;
+}
+
+.number-btn {
+  width: 80px;
+  height: 80px;
+  border: 3px solid #4f46e5;
+  background: white;
+  color: #4f46e5;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.number-btn:hover {
+  background: #4f46e5;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(79, 70, 229, 0.3);
+}
+
+.number-btn:active {
+  transform: translateY(0);
+}
+
+.control-btn {
+  padding: 15px 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: all 0.3s ease;
+}
+
+.start-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+}
+
+.reset-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.reset-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+}
+
+.retry-btn {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+}
+
+.retry-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+}
+
+.user-input {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.input-number {
+  width: 40px;
+  height: 40px;
+  background: #e0e7ff;
+  border: 2px solid #4f46e5;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  color: #4f46e5;
+}
+
+.input-placeholder {
+  background: #f3f4f6;
+  border: 2px dashed #d1d5db;
+  color: #9ca3af;
+}
+
+.message {
+  padding: 15px;
+  border-radius: 10px;
+  margin: 20px 0;
+  font-weight: bold;
+}
+
+.message.success {
+  background: #dcfce7;
+  color: #166534;
+  border: 2px solid #bbf7d0;
+}
+
+.message.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 2px solid #fecaca;
+}
+
+.message.info {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 2px solid #bfdbfe;
+}
+
+.hidden {
+  display: none;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .game-container {
+    padding: 20px;
+  }
+
+  .game-title {
+    font-size: 2rem;
+  }
+
+  .stats {
+    gap: 20px;
+  }
+
+  .display-card {
+    width: 150px;
+    height: 150px;
+    font-size: 4rem;
+  }
+
+  .number-btn {
+    width: 60px;
+    height: 60px;
+    font-size: 1.4rem;
+  }
+
+  .control-btn {
+    padding: 12px 20px;
+    font-size: 1rem;
+    margin: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .game-container {
+    padding: 15px;
+  }
+
+  .game-title {
+    font-size: 1.8rem;
+  }
+
+  .stats {
+    gap: 15px;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .display-card {
+    width: 120px;
+    height: 120px;
+    font-size: 3rem;
+  }
+
+  .number-grid {
+    max-width: 250px;
+    gap: 10px;
+  }
+
+  .number-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+}
